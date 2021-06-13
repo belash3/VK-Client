@@ -43,6 +43,7 @@ class API {
             "owner_id": String(user.id),
             "count": 100,
             "no_service_albums": 1,
+            "photo_sizes": 0,
             "access_token": Session.shared.token,
             "v": "5.131"]
         let url = baseUrl + method
