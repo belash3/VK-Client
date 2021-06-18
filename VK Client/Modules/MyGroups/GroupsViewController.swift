@@ -50,6 +50,6 @@ class GroupsViewController: UIViewController, UITableViewDataSource, UITableView
         cell.imageView?.sd_setImage(with: URL(string: group.photo100), placeholderImage: UIImage())
         return cell
     }
-
-
+    
+    
 }

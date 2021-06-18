@@ -10,11 +10,10 @@ import SDWebImage
 
 class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    
     var apiService = API()
     var friends: [User] = []
     private var transitionUser: Any = ""
-
+    
     @IBOutlet var popUpView: UIView!
     
     @IBOutlet weak var usernameLabel: UILabel!
@@ -31,17 +30,13 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
         let group = DispatchGroup()
-        
         group.enter()
         apiService.getFriends { [weak self] users in
             guard let self = self else { return }
             self.friends = users
             group.leave()
         }
-        
-        
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
             self.friendsTableView.reloadData()
@@ -53,7 +48,6 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         let friend = friends[indexPath.row]
         cell.textLabel?.text = "\(friend.firstName) \(friend.lastName)"
         cell.imageView?.sd_setImage(with: URL(string: friend.photo100), placeholderImage: UIImage())
-        
         return cell
     }
     
@@ -74,21 +68,21 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         return friends.count
     }
     
-// MARK: -- Добавляем всплывающее меню:
-    
+    // MARK: -- Добавляем всплывающее меню:
     
     @IBAction func ShowGroupsButton(_ sender: UIButton) {
-
         removePopUpView()
-        
     }
+    
     @IBAction func ShowPhotoButton(_ sender: Any) {
         removePopUpView()
         performSegue(withIdentifier: "fromFriendsToPhotoSegue", sender: transitionUser)
     }
+    
     @IBAction func CancelButton(_ sender: Any) {
         removePopUpView()
     }
+    
     func addPopUpView (user: User) {
         self.friendsTableView.addSubview(popUpView)
         popUpView.layer.position = CGPoint(x: self.friendsTableView.frame.size.width/2, y: self.friendsTableView.frame.size.height/2.5)
@@ -112,5 +106,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                        }) {(success: Bool) in
             self.popUpView.removeFromSuperview()
         }
+        
     }
+    
 }

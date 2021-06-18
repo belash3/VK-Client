@@ -7,7 +7,7 @@
 
 import Foundation
 import Alamofire
-
+import RealmSwift
 
 class API {
     
@@ -35,7 +35,7 @@ class API {
             }
         }
     }
-
+    
     func getPhotosByUser(user: User, completion: @escaping([Photo])->() ) {
         let method = "/photos.getAll"
         let parameters: Parameters = [
@@ -50,7 +50,7 @@ class API {
         
         AF.request(url, method: .get, parameters: parameters).responseData { response in
             guard let data = response.data else { return }
-            print("PHOTO PRETTY JSON = ", data.prettyJSON as Any)
+            //print("PHOTO PRETTY JSON = ", data.prettyJSON as Any)
             guard let userPhotosResponse = try? JSONDecoder().decode(UserPhotos.self, from: data) else { return }
             let photoGallery = userPhotosResponse.response.items
             DispatchQueue.main.async {
@@ -65,7 +65,7 @@ class API {
         let parameters: Parameters = [
             "user_id": cliendId,
             "order": "name",
-            "count": 200,
+            "count": 100,
             "fields": "photo_100",
             "access_token": Session.shared.token,
             "v": version]
@@ -78,6 +78,42 @@ class API {
             DispatchQueue.main.async {
                 completion(friends)
             }
+        }
+    }
+}
+
+extension API {
+    
+    func saveUserData(by user: [User]) {
+        let realm = try! Realm()
+        do {
+            realm.beginWrite()
+            realm.add(user)
+            try realm.commitWrite()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func saveGroupData(by group: [Group]) {
+        let realm = try! Realm()
+        do {
+            realm.beginWrite()
+            realm.add(group)
+            try realm.commitWrite()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func savePhotosData(by photo: [Photo]) {
+        let realm = try! Realm()
+        do {
+            realm.beginWrite()
+            realm.add(photo)
+            try realm.commitWrite()
+        } catch {
+            print(error)
         }
     }
 }

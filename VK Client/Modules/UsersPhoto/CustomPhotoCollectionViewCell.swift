@@ -16,13 +16,14 @@ class CustomPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     override func awakeFromNib() {
-      super.awakeFromNib()
-      clearCell()
+        super.awakeFromNib()
+        clearCell()
     }
 
     func configure( image: UIImage?) {
-      if let image = image {
-        photoImageView.image = image
-      }
+        if let image = image {
+            photoImageView.image = image
+        }
+        
     }
 }
