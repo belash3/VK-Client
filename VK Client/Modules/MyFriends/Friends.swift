@@ -6,36 +6,47 @@
 //
 
 import Foundation
+import RealmSwift
 
-// MARK: - Friends
-struct Friends: Codable {
+// MARK: - User
+class Friends: Decodable {
     let response: FriendsResponse
 }
 
 // MARK: - Response
-struct FriendsResponse: Codable {
+class FriendsResponse: Decodable {
     let count: Int
     let items: [User]
 }
 
 // MARK: - Item
-struct User: Codable {
-    let canAccessClosed: Bool?
-    let id: Int
-    let photo100: String
-    let lastName, trackCode: String
-    let isClosed: Bool?
-    let firstName: String
-    let deactivated: String?
-
+class User: Object, Decodable {
+    @objc dynamic var id = 0
+    @objc dynamic var lastName = ""
+    @objc dynamic var firstName = ""
+    @objc dynamic var trackCode = ""
+    @objc dynamic var photo100 = ""
+    
     enum CodingKeys: String, CodingKey {
-        case canAccessClosed = "can_access_closed"
         case id
-        case photo100 = "photo_100"
         case lastName = "last_name"
         case trackCode = "track_code"
-        case isClosed = "is_closed"
         case firstName = "first_name"
-        case deactivated
+        case photo100 = "photo_100"
     }
+    
+    enum TopCodingKeys: String, CodingKey {
+        case response
+        case items
+    }
+    
+    convenience required init(from decoder: Decoder) throws {
+        self.init()
+        let usersValues = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try usersValues.decode(Int.self, forKey: .id)
+        self.photo100 = try usersValues.decode(String.self, forKey: .photo100)
+        self.lastName = try usersValues.decode(String.self, forKey: .lastName)
+        self.firstName = try usersValues.decode(String.self, forKey: .firstName)
+    }
+    
 }
