@@ -82,38 +82,3 @@ class API {
     }
 }
 
-extension API {
-    
-    func saveUserData(by user: [User]) {
-        let realm = try! Realm()
-        do {
-            realm.beginWrite()
-            realm.add(user)
-            try realm.commitWrite()
-        } catch {
-            print(error)
-        }
-    }
-    
-    func saveGroupData(by group: [Group]) {
-        let realm = try! Realm()
-        do {
-            realm.beginWrite()
-            realm.add(group)
-            try realm.commitWrite()
-        } catch {
-            print(error)
-        }
-    }
-    
-    func savePhotosData(by photo: [Photo]) {
-        let realm = try! Realm()
-        do {
-            realm.beginWrite()
-            realm.add(photo)
-            try realm.commitWrite()
-        } catch {
-            print(error)
-        }
-    }
-}

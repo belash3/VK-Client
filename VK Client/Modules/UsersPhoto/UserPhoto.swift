@@ -51,6 +51,10 @@ class Photo: Object, Decodable {
         let photoArray = try photoValues.decodeIfPresent([Size].self, forKey: .sizes) ?? [Size()]
         sizeList.append(objectsIn: photoArray)
     }
+    
+    override class func primaryKey() -> String? {
+            return "id"
+        }
 }
 
 // MARK: - Size

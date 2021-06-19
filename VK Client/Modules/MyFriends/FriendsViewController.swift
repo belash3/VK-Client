@@ -13,6 +13,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     var apiService = API()
     var friends: [User] = []
     private var transitionUser: Any = ""
+    private let databaseService = DatabaseServiceImpl()
     
     @IBOutlet var popUpView: UIView!
     
@@ -30,15 +31,13 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let group = DispatchGroup()
-        group.enter()
-        apiService.getFriends { [weak self] users in
+        apiService.getFriends { [weak self] usersArray in
             guard let self = self else { return }
-            self.friends = users
-            group.leave()
-        }
-        group.notify(queue: .main) { [weak self] in
-            guard let self = self else { return }
+            for item in usersArray {
+                self.databaseService.save(object: item, update: true)
+            }
+            guard let item = self.databaseService.read(object: User()) else {return}
+            self.friends.append(contentsOf: item)
             self.friendsTableView.reloadData()
         }
     }

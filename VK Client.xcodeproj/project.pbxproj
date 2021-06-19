@@ -26,6 +26,7 @@
 		02496D652670FE67001E225B /* UserPhotosCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02496D632670FE67001E225B /* UserPhotosCollectionViewController.swift */; };
 		02496D692671F9E1001E225B /* CustomPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02496D672671F9E1001E225B /* CustomPhotoCollectionViewCell.swift */; };
 		02496D6A2671F9E1001E225B /* CustomPhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02496D682671F9E1001E225B /* CustomPhotoCollectionViewCell.xib */; };
+		0275F4A2267E738C003EE464 /* DataBaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0275F4A1267E738C003EE464 /* DataBaseService.swift */; };
 		55A30ECEA0EE95EA69B1F8D2 /* Pods_VK_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FAD549D7471B307E75DB174 /* Pods_VK_Client.framework */; };
 		8AABA3FB0CB1299F175B24B6 /* Pods_VK_Client_VK_ClientUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC38CD92C5076CA66544B99E /* Pods_VK_Client_VK_ClientUITests.framework */; };
 		E47EB79EEB5E1ADEE403CF5E /* Pods_VK_ClientTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928B8571B23C2A77595E665F /* Pods_VK_ClientTests.framework */; };
@@ -74,6 +75,7 @@
 		02496D632670FE67001E225B /* UserPhotosCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPhotosCollectionViewController.swift; sourceTree = "<group>"; };
 		02496D672671F9E1001E225B /* CustomPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		02496D682671F9E1001E225B /* CustomPhotoCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomPhotoCollectionViewCell.xib; sourceTree = "<group>"; };
+		0275F4A1267E738C003EE464 /* DataBaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseService.swift; sourceTree = "<group>"; };
 		08EC1D213F6E6DA0976343E4 /* Pods-VK ClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VK ClientTests.release.xcconfig"; path = "Target Support Files/Pods-VK ClientTests/Pods-VK ClientTests.release.xcconfig"; sourceTree = "<group>"; };
 		5B8605BCCEADAB313D4321F3 /* Pods-VK Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VK Client.debug.xcconfig"; path = "Target Support Files/Pods-VK Client/Pods-VK Client.debug.xcconfig"; sourceTree = "<group>"; };
 		6EE16E47528BB183E94150F9 /* Pods-VK Client-VK ClientUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VK Client-VK ClientUITests.release.xcconfig"; path = "Target Support Files/Pods-VK Client-VK ClientUITests/Pods-VK Client-VK ClientUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 			children = (
 				02496D4B266D55D3001E225B /* Session.swift */,
 				02496D4D266D5B46001E225B /* APIServices.swift */,
+				0275F4A1267E738C003EE464 /* DataBaseService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				02496D53266D61C2001E225B /* Friends.swift in Sources */,
 				02496D58266F632F001E225B /* GroupsViewController.swift in Sources */,
 				02496D50266D5C56001E225B /* Data+PrettyJSON.swift in Sources */,
+				0275F4A2267E738C003EE464 /* DataBaseService.swift in Sources */,
 				02496D18266D40A1001E225B /* AuthViewController.swift in Sources */,
 				02496D14266D40A1001E225B /* AppDelegate.swift in Sources */,
 				02496D16266D40A1001E225B /* SceneDelegate.swift in Sources */,

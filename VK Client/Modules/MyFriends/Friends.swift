@@ -49,4 +49,8 @@ class User: Object, Decodable {
         self.firstName = try usersValues.decode(String.self, forKey: .firstName)
     }
     
+    override class func primaryKey() -> String? {
+            return "id"
+        }
+    
 }

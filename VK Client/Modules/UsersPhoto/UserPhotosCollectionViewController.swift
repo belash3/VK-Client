@@ -15,6 +15,7 @@ class UserPhotosCollectionViewController: UICollectionViewController {
     var apiService = API()
     var photoGallery: [Photo] = []
     var transitionUser: Any = ""
+    private let databaseService = DatabaseServiceImpl()
     private var urlArray = [String]()
     
     override func viewDidLoad() {
@@ -22,31 +23,22 @@ class UserPhotosCollectionViewController: UICollectionViewController {
         let nibFile = UINib(nibName: "CustomPhotoCollectionViewCell", bundle: nil)
         self.collectionView.register(nibFile, forCellWithReuseIdentifier: reuseIdentifier)
         guard let user = transitionUser as? User else {return}
-        let group = DispatchGroup()
-        group.enter()
         apiService.getPhotosByUser(user: user) { [weak self] photoGallery in
-            guard let self = self else { return }
-            self.photoGallery = photoGallery
-            group.leave()
-        }
-        
-        group.notify(queue: .main) { [weak self] in
-            guard let self = self else { return }
-            self.collectionView.reloadData()
-        }
-        
-        apiService.getPhotosByUser(user: user) {  [weak self] photoGallery in
-            guard let self = self else { return }
-            let albumArray = photoGallery
+           guard let self = self else { return }
+            for item in photoGallery {
+                self.databaseService.save(object: item, update: true)
+            }
+            guard let albumArray = self.databaseService.read(object: Photo()) else {return}
             albumArray.forEach {
-                $0.sizeList.forEach {
+                let item = $0.sizeList
+                item.forEach {
                     if $0.type == "m"  {
                         self.urlArray.append($0.url)
                     }
                 }
             }
+            self.collectionView.reloadData()
         }
-        
     }
     
     // MARK: UICollectionViewDataSource
