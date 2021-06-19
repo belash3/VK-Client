@@ -12,6 +12,7 @@ class GroupsViewController: UIViewController, UITableViewDataSource, UITableView
     
     var apiService = API()
     var groups: [Group] = []
+    private let databaseService = DatabaseServiceImpl()
     
     @IBOutlet weak var groupsTableView: UITableView! {
         didSet {
@@ -24,19 +25,16 @@ class GroupsViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let group = DispatchGroup()
-        group.enter()
-        
-        apiService.getGroups { [weak self] groups in
+        apiService.getGroups { [weak self] groupsArray in
             guard let self = self else { return }
-            self.groups = groups
-            group.leave()
-        }
-        
-        group.notify(queue: .main) { [weak self] in
-            guard let self = self else { return }
+            for item in groupsArray {
+                self.databaseService.save(object: item, update: true)
+            }
+            guard let item = self.databaseService.read(object: Group()) else {return}
+            self.groups.append(contentsOf: item)
             self.groupsTableView.reloadData()
         }
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

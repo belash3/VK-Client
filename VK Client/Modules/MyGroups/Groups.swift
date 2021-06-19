@@ -70,17 +70,8 @@ class Group: Object, Decodable {
         self.name = try groupValues.decode(String.self, forKey: .name)
         self.isClosed = try groupValues.decode(Int.self, forKey: .isClosed)
     }
-//    init(isMember: Int, id: Int, photo100: String, isAdvertiser: Int, isAdmin: Int, photo50: String, photo200: String, screenName: String, name: String, isClosed: Int) {
-//        self.isMember = isMember
-//        self.id = id
-//        self.photo100 = photo100
-//        self.isAdvertiser = isAdvertiser
-//        self.isAdmin = isAdmin
-//        self.photo50 = photo50
-//        self.photo200 = photo200
-//        self.screenName = screenName
-//        self.name = name
-//        self.isClosed = isClosed
-//    }
     
+    override class func primaryKey() -> String? {
+            return "id"
+        }
 }
