@@ -36,7 +36,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             for item in usersArray {
                 self.databaseService.save(object: item, update: true)
             }
-            guard let item = self.databaseService.read(object: User()) else {return}
+            guard let item = self.databaseService.read(object: User(), tableView: self.friendsTableView) else {return}
             self.friends.append(contentsOf: item)
             self.friendsTableView.reloadData()
         }

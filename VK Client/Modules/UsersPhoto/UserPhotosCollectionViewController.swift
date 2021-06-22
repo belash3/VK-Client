@@ -28,7 +28,7 @@ class UserPhotosCollectionViewController: UICollectionViewController {
             for item in photoGallery {
                 self.databaseService.save(object: item, update: true)
             }
-            guard let albumArray = self.databaseService.read(object: Photo()) else {return}
+            guard let albumArray = self.databaseService.read(object: Photo(), collectionView: self.collectionView) else {return}
             albumArray.forEach {
                 let item = $0.sizeList
                 item.forEach {

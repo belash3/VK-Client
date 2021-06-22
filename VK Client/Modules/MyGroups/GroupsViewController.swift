@@ -30,7 +30,7 @@ class GroupsViewController: UIViewController, UITableViewDataSource, UITableView
             for item in groupsArray {
                 self.databaseService.save(object: item, update: true)
             }
-            guard let item = self.databaseService.read(object: Group()) else {return}
+            guard let item = self.databaseService.read(object: Group(), tableView: self.groupsTableView) else {return}
             self.groups.append(contentsOf: item)
             self.groupsTableView.reloadData()
         }
