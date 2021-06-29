@@ -13,7 +13,7 @@ class API {
     
     let baseUrl = "https://api.vk.com/method"
     let token = Session.shared.token
-    let cliendId = Session.shared.userId
+    let cliendId = Session.shared.selfUserId
     let version = "5.131"
     
     func getGroups(completion: @escaping([Group])->()) {

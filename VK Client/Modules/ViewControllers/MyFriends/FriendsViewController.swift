@@ -7,6 +7,7 @@
 
 import UIKit
 import SDWebImage
+import Firebase
 
 class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -14,6 +15,8 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     var friends: [User] = []
     private var transitionUser: Any = ""
     private let databaseService = DatabaseServiceImpl()
+    private let ref = Database.database().reference(withPath: "user")
+    private var FBUsers = [FBUserModel]()
     
     @IBOutlet var popUpView: UIView!
     
@@ -39,7 +42,28 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             guard let item = self.databaseService.read(object: User(), tableView: self.friendsTableView) else {return}
             self.friends.append(contentsOf: item)
             self.friendsTableView.reloadData()
+            
+            for item in self.friends {
+                let fbUsers = FBUserModel(lastName: item.lastName, photo100: item.photo100, firstName: item.firstName).toAnyObject()
+               self.ref.child(Session.shared.selfUserId).child("friends").child(String(item.id)).setValue(fbUsers)
+             }
         }
+        
+        self.ref.child(Session.shared.selfUserId).child("friends").observe(.value, with: { snapshot in
+                var newFBUsers: [FBUserModel] = []
+          for child in snapshot.children {
+            if let snapshot = child as? DataSnapshot,
+               let user = FBUserModel(snapshot: snapshot) {
+              newFBUsers.append(user)
+                    }
+                }
+                self.FBUsers = newFBUsers
+                self.friendsTableView.reloadData()
+            })
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+      super.viewWillAppear(animated)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
