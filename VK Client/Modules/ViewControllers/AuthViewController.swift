@@ -66,6 +66,11 @@ class AuthViewController: UIViewController, WKNavigationDelegate {
                 return dict
             }
         
+        if let selfUserId = params["user_id"] {
+          Session.shared.selfUserId = selfUserId
+          print(Session.shared.selfUserId)
+        }
+        
         if let token = params["access_token"] {
             print("TOKEN = ", token as Any)
             KeychainWrapper.standard.set(token, forKey: "vkToken")
