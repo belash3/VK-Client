@@ -58,7 +58,7 @@ class Photo: Object, Decodable {
 }
 
 // MARK: - Size
-class Size: Object, Decodable {
+class Size: Object, Codable {
     @objc dynamic var width = 0
     @objc dynamic var height = 0
     @objc dynamic var url = ""

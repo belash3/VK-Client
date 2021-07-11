@@ -67,7 +67,7 @@
                             <constraint firstItem="TeS-88-AkO" firstAttribute="bottom" secondItem="UAy-IV-VfX" secondAttribute="bottom" id="r3e-Sp-D3u"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Friends" id="77J-QP-nSb"/>
+                    <tabBarItem key="tabBarItem" title="Friends" image="person.2" catalog="system" id="77J-QP-nSb"/>
                     <connections>
                         <outlet property="friendsTableView" destination="UAy-IV-VfX" id="vfW-TN-aTh"/>
                         <outlet property="popUpView" destination="kZt-Eq-tze" id="zCR-Ux-nJL"/>
@@ -211,7 +211,7 @@
                             <constraint firstItem="VrC-Om-AUz" firstAttribute="top" secondItem="UfG-8h-be1" secondAttribute="top" id="sAR-Jf-RVF"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Groups" id="2pp-Rh-4wa"/>
+                    <tabBarItem key="tabBarItem" title="Groups" image="person.3" catalog="system" id="2pp-Rh-4wa"/>
                     <connections>
                         <outlet property="groupsTableView" destination="VrC-Om-AUz" id="x0Q-IK-ghN"/>
                     </connections>
@@ -219,6 +219,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qne-nH-p2J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2635" y="534"/>
+        </scene>
+        <!--News-->
+        <scene sceneID="UPy-ok-qBb">
+            <objects>
+                <tableViewController id="tJE-rz-bLy" customClass="NewsTableViewController" customModule="VK_Client" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="J2a-eG-k63">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="snR-cS-kAE">
+                                <rect key="frame" x="0.0" y="24.5" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="snR-cS-kAE" id="79i-hf-LW8">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="tJE-rz-bLy" id="s09-wD-EPr"/>
+                            <outlet property="delegate" destination="tJE-rz-bLy" id="Sj3-Bh-tBM"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="News" image="newspaper" catalog="system" id="MYe-lp-Ha0"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="APw-qC-wWk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2622" y="1235"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xzU-Rd-rhS">
@@ -252,6 +281,7 @@
                     <connections>
                         <segue destination="zta-Eg-jBS" kind="relationship" relationship="viewControllers" id="kV1-84-7KC"/>
                         <segue destination="4Tm-hI-IDB" kind="relationship" relationship="viewControllers" id="jh7-FB-oCr"/>
+                        <segue destination="tJE-rz-bLy" kind="relationship" relationship="viewControllers" id="cWR-fT-Cua"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jY8-xF-DDa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -260,6 +290,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="newspaper" catalog="system" width="128" height="108"/>
+        <image name="person.2" catalog="system" width="128" height="81"/>
+        <image name="person.3" catalog="system" width="128" height="62"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

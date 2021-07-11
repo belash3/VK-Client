@@ -36,6 +36,30 @@ class API {
         }
     }
     
+    var news: NewsResponse?
+    func getNews(completion: @escaping (NewsResponse) -> Void) {
+        let parameters: Parameters = [
+            "filters": "post",
+            "access_token": Session.shared.token,
+            "v": "5.131"]
+        let method = "/newsfeed.get"
+        let url = baseUrl + method
+        AF.request(url, method: .get, parameters: parameters).responseData {
+            response in
+            guard let data = response.data else { return }
+            print("NEWS JSON = ", data.prettyJSON as Any)
+            do {
+                let news = try JSONDecoder().decode(News.self, from: data).response
+                DispatchQueue.main.async {
+                    completion(news)
+                }
+            } catch {
+                print (error)
+            }
+        }
+    }
+    
+    
     func getPhotosByUser(user: User, completion: @escaping([Photo])->() ) {
         let method = "/photos.getAll"
         let parameters: Parameters = [
