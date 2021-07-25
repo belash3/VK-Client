@@ -16,7 +16,7 @@ class TextTableViewCell: UITableViewCell {
     }
 
     func clearCell() {
-        newsTextLabel.text = nil
+        newsTextLabel.text = "No text"
     }
     
     override func prepareForReuse() {

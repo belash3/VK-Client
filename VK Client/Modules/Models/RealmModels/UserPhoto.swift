@@ -5,7 +5,6 @@
 //  Created by Сергей Беляков on 09.06.2021.
 //
 
-//   let photo = try? newJSONDecoder().decode(Photo.self, from: jsonData)
 
 import Foundation
 import RealmSwift

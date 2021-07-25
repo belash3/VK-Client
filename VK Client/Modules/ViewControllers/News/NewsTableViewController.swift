@@ -6,14 +6,21 @@
 //
 
 import UIKit
+import SDWebImage
 
 class NewsTableViewController: UITableViewController {
 
-    private var news = NewsResponse(items: nil, groups: nil, profiles: nil, nextFrom: nil)
+    private var news = NewsResponse(items: nil, profiles: nil, groups: nil, nextFrom: nil)
+    var newss: [NewsItem] = []
     var apiService = API()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        apiService.getNews { [weak self] news in
+            guard let self = self else { return }
+            self.news = news
+            self.tableView.reloadData()
+        }
         makeSection()
     }
     
@@ -32,10 +39,6 @@ class NewsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
       super.viewWillAppear(animated)
-        apiService.getNews { [weak self] news in
-            guard let self = self else { return }
-            self.news = news
-        }
         }
 
     // MARK: - Table view data source
@@ -48,8 +51,7 @@ class NewsTableViewController: UITableViewController {
         guard let profiles = news.profiles,
               let groups = news.groups,
               let items = news.items else { return UITableViewCell() }
-        switch indexPath.row {
-        case 0:
+        if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SourceTableViewCell", for: indexPath) as! SourceTableViewCell
             var name, string: String?
             guard let source = items[indexPath.section].sourceID else { return UITableViewCell() }
@@ -64,29 +66,27 @@ class NewsTableViewController: UITableViewController {
             } else {
                 profiles.forEach {
                     if $0.id == source {
-                        name = $0.firstName + " " + $0.lastName
+                        name = $0.name
                         string = $0.photo100
                     }
                 }
             }
             guard let avatarString = URL(string: string!) else { return UITableViewCell() }
-            let image = asyncPhoto(cellImage: cell.avatarImageView, url: avatarString)
             let date = unixTimeConvertion(unixTimeInt: items[indexPath.section].date ?? 0)
-            cell.configure(image: image, date: date, name: name)
+            cell.configure(image: nil, date: date, name: name)
+            cell.avatarImageView.sd_setImage(with: avatarString)
             return cell
-        case 1:
+        } else if indexPath.row == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TextTableViewCell", for: indexPath) as! TextTableViewCell
-            let newsText = items[indexPath.section].text
+            let newsText = items[indexPath.section].text ?? "Error"
             cell.configure(newsText: newsText)
             return cell
-        case 2:
+        } else if indexPath.row == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ImageTableViewCell", for: indexPath) as! ImageTableViewCell
             guard let imageString = findURL(item: items[indexPath.section].attachments) else { return UITableViewCell() }
-            let newsImage = asyncPhoto(cellImage: cell.imageView ?? UIImageView(), url: imageString)
-            cell.configure(image: newsImage)
+            cell.newsImage.sd_setImage(with: imageString)
             return cell
-            
-        case 3:
+        } else if indexPath.row == 3 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "UtilityTableViewCell", for: indexPath) as! UtilityTableViewCell
             let likes = String(items[indexPath.section].likes?.count ?? 0)
             let comments = String(items[indexPath.section].comments?.count ?? 0)
@@ -94,73 +94,17 @@ class NewsTableViewController: UITableViewController {
             let views = String(items[indexPath.section].views?.count ?? 0)
             cell.configure(likes: likes, comments: comments, reposts: reposts, views: views)
             return cell
-        case 4:
+        } else if indexPath.row == 4 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SeparatorTableViewCell", for: indexPath) as! SeparatorTableViewCell
             return cell
-        default:
+        } else {
             return UITableViewCell()
         }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return 5
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 

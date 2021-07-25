@@ -36,7 +36,7 @@ class API {
         }
     }
     
-    var news: NewsResponse?
+    //var news: NewsResponse?
     func getNews(completion: @escaping (NewsResponse) -> Void) {
         let parameters: Parameters = [
             "filters": "post",
@@ -51,7 +51,7 @@ class API {
             do {
                 let news = try JSONDecoder().decode(News.self, from: data).response
                 DispatchQueue.main.async {
-                    completion(news)
+                    completion(news!)
                 }
             } catch {
                 print (error)
