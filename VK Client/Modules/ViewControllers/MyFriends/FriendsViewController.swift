@@ -34,32 +34,33 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        apiService.getFriends { [weak self] usersArray in
-            guard let self = self else { return }
-            for item in usersArray {
-                self.databaseService.save(object: item, update: true)
-            }
-            guard let item = self.databaseService.read(object: User(), tableView: self.friendsTableView) else {return}
-            self.friends.append(contentsOf: item)
-            self.friendsTableView.reloadData()
-            
-            for item in self.friends {
-                let fbUsers = FBUserModel(lastName: item.lastName, photo100: item.photo100, firstName: item.firstName).toAnyObject()
-               self.ref.child(Session.shared.selfUserId).child("friends").child(String(item.id)).setValue(fbUsers)
-             }
-        }
-        
-        self.ref.child(Session.shared.selfUserId).child("friends").observe(.value, with: { snapshot in
-                var newFBUsers: [FBUserModel] = []
-          for child in snapshot.children {
-            if let snapshot = child as? DataSnapshot,
-               let user = FBUserModel(snapshot: snapshot) {
-              newFBUsers.append(user)
-                    }
-                }
-                self.FBUsers = newFBUsers
-                self.friendsTableView.reloadData()
-            })
+        apiService.getFriends()
+//        apiService.getFriends { [weak self] usersArray in
+//            guard let self = self else { return }
+//            for item in usersArray {
+//                self.databaseService.save(object: item, update: true)
+//            }
+//            guard let item = self.databaseService.read(object: User(), tableView: self.friendsTableView) else {return}
+//            self.friends.append(contentsOf: item)
+//            self.friendsTableView.reloadData()
+//
+//            for item in self.friends {
+//                let fbUsers = FBUserModel(lastName: item.lastName, photo100: item.photo100, firstName: item.firstName).toAnyObject()
+//               self.ref.child(Session.shared.selfUserId).child("friends").child(String(item.id)).setValue(fbUsers)
+//             }
+//        }
+
+//        self.ref.child(Session.shared.selfUserId).child("friends").observe(.value, with: { snapshot in
+//                var newFBUsers: [FBUserModel] = []
+//          for child in snapshot.children {
+//            if let snapshot = child as? DataSnapshot,
+//               let user = FBUserModel(snapshot: snapshot) {
+//              newFBUsers.append(user)
+//                    }
+//                }
+//                self.FBUsers = newFBUsers
+//                self.friendsTableView.reloadData()
+//            })
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,9 +69,11 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath)
-        let friend = friends[indexPath.row]
+        //let friend = friends[indexPath.row]
+        guard let friend = apiService.friends?[indexPath.row] else { return UITableViewCell() }
         cell.textLabel?.text = "\(friend.firstName) \(friend.lastName)"
         cell.imageView?.sd_setImage(with: URL(string: friend.photo100), placeholderImage: UIImage())
+        tableView.reloadRows(at: [indexPath], with: .automatic)
         return cell
     }
     
@@ -82,13 +85,13 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let user = friends[indexPath.row]
+        if let user = apiService.friends?[indexPath.row] {
         transitionUser = user
-        addPopUpView(user: user)
+        addPopUpView(user: user)}
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return friends.count
+        return apiService.friends?.count ?? 0
     }
     
     // MARK: -- Добавляем всплывающее меню:

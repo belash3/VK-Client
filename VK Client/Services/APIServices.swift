@@ -36,6 +36,8 @@ class API {
         }
     }
     
+    
+    
     //var news: NewsResponse?
     func getNews(completion: @escaping (NewsResponse) -> Void) {
         let parameters: Parameters = [
@@ -82,9 +84,33 @@ class API {
             }
         }
     }
+//
+//    func getFriends(completion: @escaping([User])->()) {
+//
+//        let method = "/friends.get"
+//        let parameters: Parameters = [
+//            "user_id": cliendId,
+//            "order": "name",
+//            "count": 100,
+//            "fields": "photo_100",
+//            "access_token": Session.shared.token,
+//            "v": version]
+//        let url = baseUrl + method
+//
+//        AF.request(url, method: .get, parameters: parameters).responseData { response in
+//            guard let data = response.data else { return }
+//            guard let friendsResponse = try? JSONDecoder().decode(Friends.self, from: data) else { return }
+//            let friends = friendsResponse.response.items
+//            DispatchQueue.main.async {
+//                completion(friends)
+//            }
+//        }
+//    }
     
-    func getFriends(completion: @escaping([User])->()) {
-        
+    
+    let friendsQueue = OperationQueue()
+    var friends: Results<User>?
+    private var friendsRequest: DataRequest {
         let method = "/friends.get"
         let parameters: Parameters = [
             "user_id": cliendId,
@@ -94,14 +120,31 @@ class API {
             "access_token": Session.shared.token,
             "v": version]
         let url = baseUrl + method
+        return AF.request(url, method: .get, parameters: parameters)
+    }
+    
+    func getFriends() {
+        friendsQueue.qualityOfService = .userInteractive
+        let getData = GetDataOperation(request: friendsRequest)
+        friendsQueue.addOperation(getData)
         
-        AF.request(url, method: .get, parameters: parameters).responseData { response in
-            guard let data = response.data else { return }
-            guard let friendsResponse = try? JSONDecoder().decode(Friends.self, from: data) else { return }
-            let friends = friendsResponse.response.items
-            DispatchQueue.main.async {
-                completion(friends)
-            }
+        let parseData = ParseDataOperation()
+        parseData.addDependency(getData)
+        friendsQueue.addOperation(parseData)
+        
+        let saveData = SaveDataOperation()
+        saveData.addDependency(parseData)
+        friendsQueue.addOperation(saveData)
+        
+        let readData = ReadDataOperation()
+        readData.addDependency(saveData)
+        OperationQueue.main.addOperation(readData)
+        readData.completionBlock = { [weak self] in
+            guard let self = self else { return }
+            self.friends = readData.friends
+//            OperationQueue.main.addOperation {
+//                completion(readData.friends)
+//            }
         }
     }
 }
