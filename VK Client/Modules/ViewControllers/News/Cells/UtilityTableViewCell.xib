@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="5HI-oc-oRH">
-                        <rect key="frame" x="10" y="5" width="395" height="50"/>
+                        <rect key="frame" x="10" y="5" width="390" height="50"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5kR-CW-nWK">
                                 <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -71,14 +73,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eye" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="sHD-mN-Z2k">
-                                <rect key="frame" x="300" y="6.5" width="35" height="31.5"/>
+                                <rect key="frame" x="300" y="11.5" width="30" height="26.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="sHD-mN-Z2k" secondAttribute="height" multiplier="1:1" id="4af-Rk-YDg"/>
-                                    <constraint firstAttribute="width" constant="35" id="Ca9-h9-rB2"/>
+                                    <constraint firstAttribute="width" constant="30" id="Ca9-h9-rB2"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Views" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sg3-h0-do9">
-                                <rect key="frame" x="335" y="0.0" width="60" height="40"/>
+                                <rect key="frame" x="330" y="0.0" width="60" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="FaY-Lh-5fz"/>
                                 </constraints>
@@ -92,6 +94,7 @@
                         </constraints>
                     </stackView>
                 </subviews>
+                <color key="backgroundColor" systemColor="systemGray6Color"/>
                 <constraints>
                     <constraint firstItem="5HI-oc-oRH" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="72z-Ge-8TF"/>
                     <constraint firstItem="5HI-oc-oRH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="UwZ-6z-cMo"/>
@@ -116,5 +119,8 @@
         <image name="eye" catalog="system" width="128" height="81"/>
         <image name="heart" catalog="system" width="128" height="109"/>
         <image name="message" catalog="system" width="128" height="113"/>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

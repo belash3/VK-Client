@@ -27,6 +27,9 @@ class TextTableViewCell: UITableViewCell {
         if let newsText = newsText {
             newsTextLabel.text = newsText
         }
+//        if newsText == "" {
+//            TextTableViewCell.
+//        }
     }
     
 }
