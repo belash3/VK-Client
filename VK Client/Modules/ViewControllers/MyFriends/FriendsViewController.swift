@@ -17,6 +17,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     private let databaseService = DatabaseServiceImpl()
     private let ref = Database.database().reference(withPath: "user")
     private var FBUsers = [FBUserModel]()
+    var refreshNotification = NotificationCenter()
     
     @IBOutlet var popUpView: UIView!
     
@@ -29,12 +30,18 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             friendsTableView.register(UITableViewCell.self, forCellReuseIdentifier: "UserCell")
         }
     }
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+         
         apiService.getFriends()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshTableView), name: NSNotification.Name("refresh"), object: nil)
+        //print(self.friends)
+        
+        
+        
 //        apiService.getFriends { [weak self] usersArray in
 //            guard let self = self else { return }
 //            for item in usersArray {
@@ -67,10 +74,10 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
       super.viewWillAppear(animated)
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath)
-        //let friend = friends[indexPath.row]
-        guard let friend = apiService.friends?[indexPath.row] else { return UITableViewCell() }
+        let friend = self.friends[indexPath.row]
         cell.textLabel?.text = "\(friend.firstName) \(friend.lastName)"
         cell.imageView?.sd_setImage(with: URL(string: friend.photo100), placeholderImage: UIImage())
         tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -94,6 +101,11 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         return apiService.friends?.count ?? 0
     }
     
+    @objc func refreshTableView() {
+        print("Friends notification")
+        print(self.friends)
+        self.friendsTableView.reloadData()
+    }
     // MARK: -- Добавляем всплывающее меню:
     
     @IBAction func ShowGroupsButton(_ sender: UIButton) {

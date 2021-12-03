@@ -16,7 +16,7 @@ class NewsTableViewController: UITableViewController {
     
     let newsRefreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.attributedTitle = NSAttributedString(string: "Updating...")
+        refreshControl.attributedTitle = NSAttributedString(string: "Updating news feed...")
         refreshControl.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
         return refreshControl
     } ()
@@ -43,7 +43,6 @@ class NewsTableViewController: UITableViewController {
             self.news = news
             self.tableView.reloadData()
         }
-        //self.tableView.reloadData()
     }
     
     func makeSection() {

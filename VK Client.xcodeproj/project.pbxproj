@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0210335C2757EB440013897B /* FriendsOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0210335B2757EB440013897B /* FriendsOperations.swift */; };
 		02496D14266D40A1001E225B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02496D13266D40A1001E225B /* AppDelegate.swift */; };
 		02496D16266D40A1001E225B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02496D15266D40A1001E225B /* SceneDelegate.swift */; };
 		02496D18266D40A1001E225B /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02496D17266D40A1001E225B /* AuthViewController.swift */; };
@@ -66,6 +67,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0210335B2757EB440013897B /* FriendsOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsOperations.swift; sourceTree = "<group>"; };
 		02496D10266D40A1001E225B /* VK Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VK Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		02496D13266D40A1001E225B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02496D15266D40A1001E225B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				02496D46266D4660001E225B /* FriendsViewController.swift */,
+				0210335B2757EB440013897B /* FriendsOperations.swift */,
 			);
 			path = MyFriends;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				02496D50266D5C56001E225B /* Data+PrettyJSON.swift in Sources */,
 				025297AB274979850047588F /* SeparatorTableViewCell.swift in Sources */,
 				0275F4A2267E738C003EE464 /* DataBaseService.swift in Sources */,
+				0210335C2757EB440013897B /* FriendsOperations.swift in Sources */,
 				02B9554326988A6200DABB64 /* NewsTableViewController.swift in Sources */,
 				02496D18266D40A1001E225B /* AuthViewController.swift in Sources */,
 				02D60503268BB14200DC3C3D /* FBGroupsModel.swift in Sources */,

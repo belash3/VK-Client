@@ -84,8 +84,8 @@ class API {
             }
         }
     }
-//
-//    func getFriends(completion: @escaping([User])->()) {
+
+//    func getFriendsOld(completion: @escaping([User])->()) {
 //
 //        let method = "/friends.get"
 //        let parameters: Parameters = [
@@ -109,7 +109,7 @@ class API {
     
     
     let friendsQueue = OperationQueue()
-    var friends: Results<User>?
+    var friends: [User]?
     private var friendsRequest: DataRequest {
         let method = "/friends.get"
         let parameters: Parameters = [
@@ -124,28 +124,23 @@ class API {
     }
     
     func getFriends() {
+       
         friendsQueue.qualityOfService = .userInteractive
-        let getData = GetDataOperation(request: friendsRequest)
-        friendsQueue.addOperation(getData)
         
+        let getData = GetDataOperation()
         let parseData = ParseDataOperation()
+        let displayData = DisplayDataOpreation()
+        var friends = [User]()
+        
+        friendsQueue.addOperation(getData)
         parseData.addDependency(getData)
         friendsQueue.addOperation(parseData)
+        displayData.addDependency(parseData)
+        OperationQueue.main.addOperation(displayData)
         
-        let saveData = SaveDataOperation()
-        saveData.addDependency(parseData)
-        friendsQueue.addOperation(saveData)
-        
-        let readData = ReadDataOperation()
-        readData.addDependency(saveData)
-        OperationQueue.main.addOperation(readData)
-        readData.completionBlock = { [weak self] in
-            guard let self = self else { return }
-            self.friends = readData.friends
-//            OperationQueue.main.addOperation {
-//                completion(readData.friends)
-//            }
-        }
+        // Ниже попытка получить данные из операции, но как их получить уже после ее выполнения? Всегда получал пустой массив, который инициализировал для последующего наполнения в операции
+        // friends = displayData.friendsList
     }
+    
 }
 
