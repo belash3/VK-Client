@@ -8,6 +8,7 @@
 import UIKit
 import SDWebImage
 import Firebase
+import Alamofire
 
 class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -17,7 +18,6 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     private let databaseService = DatabaseServiceImpl()
     private let ref = Database.database().reference(withPath: "user")
     private var FBUsers = [FBUserModel]()
-    var refreshNotification = NotificationCenter()
     
     @IBOutlet var popUpView: UIView!
     
@@ -30,50 +30,15 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             friendsTableView.register(UITableViewCell.self, forCellReuseIdentifier: "UserCell")
         }
     }
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
-         
-        apiService.getFriends()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshTableView), name: NSNotification.Name("refresh"), object: nil)
-        //print(self.friends)
-        
-        
-        
-//        apiService.getFriends { [weak self] usersArray in
-//            guard let self = self else { return }
-//            for item in usersArray {
-//                self.databaseService.save(object: item, update: true)
-//            }
-//            guard let item = self.databaseService.read(object: User(), tableView: self.friendsTableView) else {return}
-//            self.friends.append(contentsOf: item)
-//            self.friendsTableView.reloadData()
-//
-//            for item in self.friends {
-//                let fbUsers = FBUserModel(lastName: item.lastName, photo100: item.photo100, firstName: item.firstName).toAnyObject()
-//               self.ref.child(Session.shared.selfUserId).child("friends").child(String(item.id)).setValue(fbUsers)
-//             }
-//        }
-
-//        self.ref.child(Session.shared.selfUserId).child("friends").observe(.value, with: { snapshot in
-//                var newFBUsers: [FBUserModel] = []
-//          for child in snapshot.children {
-//            if let snapshot = child as? DataSnapshot,
-//               let user = FBUserModel(snapshot: snapshot) {
-//              newFBUsers.append(user)
-//                    }
-//                }
-//                self.FBUsers = newFBUsers
-//                self.friendsTableView.reloadData()
-//            })
+        getFriends()
     }
     
     override func viewWillAppear(_ animated: Bool) {
       super.viewWillAppear(animated)
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath)
@@ -90,15 +55,14 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         destination.transitionUser = self.transitionUser
     }
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let user = apiService.friends?[indexPath.row] {
+        let user = self.friends[indexPath.row]
         transitionUser = user
-        addPopUpView(user: user)}
+        addPopUpView(user: user)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return apiService.friends?.count ?? 0
+        return self.friends.count
     }
     
     @objc func refreshTableView() {
@@ -144,7 +108,36 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                        }) {(success: Bool) in
             self.popUpView.removeFromSuperview()
         }
-        
     }
     
+    // MARK: -- Загрузка, парсинг и отображение списка друзей:
+    
+    let friendsQueue = OperationQueue()
+    private var friendsRequest: DataRequest {
+        let method = "/friends.get"
+        let parameters: Parameters = [
+            "user_id": apiService.cliendId,
+            "order": "name",
+            "count": 100,
+            "fields": "photo_100",
+            "access_token": apiService.token,
+            "v": apiService.version]
+        let url = apiService.baseUrl + method
+        return AF.request(url, method: .get, parameters: parameters)
+    }
+    
+    func getFriends() {
+        
+        friendsQueue.qualityOfService = .userInteractive
+        
+        let getData = GetDataOperation()
+        let parseData = ParseDataOperation()
+        let displayData = DisplayDataOpreation(controller: self)
+        
+        friendsQueue.addOperation(getData)
+        parseData.addDependency(getData)
+        friendsQueue.addOperation(parseData)
+        displayData.addDependency(parseData)
+        OperationQueue.main.addOperation(displayData)
+    }
 }
