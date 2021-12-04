@@ -14,14 +14,35 @@ class NewsTableViewController: UITableViewController {
     var newss: [NewsItem] = []
     var apiService = API()
     
+    let newsRefreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Updating news feed...")
+        refreshControl.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
+        return refreshControl
+    } ()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.refreshControl = newsRefreshControl
         apiService.getNews { [weak self] news in
             guard let self = self else { return }
             self.news = news
             self.tableView.reloadData()
         }
         makeSection()
+        self.tableView.separatorStyle = .none
+        self.tableView.backgroundColor = .systemGray6
+    }
+    
+    @objc func refreshNews() {
+        
+        newsRefreshControl.endRefreshing()
+        apiService.getNews { [weak self] news in
+            guard let self = self else { return }
+            self.news = news
+            self.tableView.reloadData()
+        }
     }
     
     func makeSection() {
@@ -46,6 +67,8 @@ class NewsTableViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return news.items?.count ?? 1
     }
+    
+
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let profiles = news.profiles,
@@ -83,8 +106,13 @@ class NewsTableViewController: UITableViewController {
             return cell
         } else if indexPath.row == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ImageTableViewCell", for: indexPath) as! ImageTableViewCell
-            guard let imageString = findURL(item: items[indexPath.section].attachments) else { return UITableViewCell() }
+            guard let imageString = findURL(item: items[indexPath.section].attachments)
+                else {
+                    let cell = UITableViewCell()
+                    cell.backgroundColor = .systemGray6
+                    return cell }
             cell.newsImage.sd_setImage(with: imageString)
+            cell.backgroundColor = .systemGray6
             return cell
         } else if indexPath.row == 3 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "UtilityTableViewCell", for: indexPath) as! UtilityTableViewCell

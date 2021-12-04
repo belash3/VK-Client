@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,24 +19,23 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MUY-8F-kql">
-                        <rect key="frame" x="10" y="10" width="300" height="303"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="303" id="0RX-w8-6MI"/>
-                        </constraints>
+                        <rect key="frame" x="5" y="0.0" width="310" height="323"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
                     </imageView>
                 </subviews>
+                <color key="backgroundColor" systemColor="systemGray6Color"/>
                 <constraints>
-                    <constraint firstItem="MUY-8F-kql" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="482-PJ-Cic"/>
-                    <constraint firstAttribute="bottom" secondItem="MUY-8F-kql" secondAttribute="bottom" constant="10" id="5S7-At-QcV"/>
+                    <constraint firstItem="MUY-8F-kql" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="482-PJ-Cic"/>
+                    <constraint firstAttribute="bottom" secondItem="MUY-8F-kql" secondAttribute="bottom" id="5S7-At-QcV"/>
                     <constraint firstItem="MUY-8F-kql" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="6Mk-kj-lD9"/>
                     <constraint firstItem="MUY-8F-kql" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="DPa-tt-yJX"/>
-                    <constraint firstItem="MUY-8F-kql" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.9375" id="F9V-e4-Ko4"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" systemColor="systemGray6Color"/>
             <constraints>
-                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="MUY-8F-kql" secondAttribute="trailing" constant="10" id="LZ9-uh-cnK"/>
-                <constraint firstItem="MUY-8F-kql" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="10" id="ldK-HS-Vg2"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="MUY-8F-kql" secondAttribute="trailing" constant="5" id="Bwz-JC-Pxb"/>
+                <constraint firstItem="MUY-8F-kql" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="5" id="ldK-HS-Vg2"/>
             </constraints>
             <connections>
                 <outlet property="newsImage" destination="MUY-8F-kql" id="KAq-WR-sYg"/>
@@ -42,4 +43,9 @@
             <point key="canvasLocation" x="118.84057971014494" y="103.45982142857143"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

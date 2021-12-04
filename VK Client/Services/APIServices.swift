@@ -36,6 +36,8 @@ class API {
         }
     }
     
+    
+    
     //var news: NewsResponse?
     func getNews(completion: @escaping (NewsResponse) -> Void) {
         let parameters: Parameters = [
@@ -79,28 +81,6 @@ class API {
             let photoGallery = userPhotosResponse.response.items
             DispatchQueue.main.async {
                 completion(photoGallery)
-            }
-        }
-    }
-    
-    func getFriends(completion: @escaping([User])->()) {
-        
-        let method = "/friends.get"
-        let parameters: Parameters = [
-            "user_id": cliendId,
-            "order": "name",
-            "count": 100,
-            "fields": "photo_100",
-            "access_token": Session.shared.token,
-            "v": version]
-        let url = baseUrl + method
-        
-        AF.request(url, method: .get, parameters: parameters).responseData { response in
-            guard let data = response.data else { return }
-            guard let friendsResponse = try? JSONDecoder().decode(Friends.self, from: data) else { return }
-            let friends = friendsResponse.response.items
-            DispatchQueue.main.async {
-                completion(friends)
             }
         }
     }

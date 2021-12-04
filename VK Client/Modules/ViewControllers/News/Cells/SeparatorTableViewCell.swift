@@ -2,7 +2,7 @@
 //  SeparatorTableViewCell.swift
 //  VK Client
 //
-//  Created by Сергей Беляков on 09.07.2021.
+//  Created by Сергей Беляков on 20.11.2021.
 //
 
 import UIKit
