@@ -67,7 +67,6 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     @objc func refreshTableView() {
         print("Friends notification")
-        print(self.friends)
         self.friendsTableView.reloadData()
     }
     // MARK: -- Добавляем всплывающее меню:

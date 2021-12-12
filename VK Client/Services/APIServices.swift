@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 import RealmSwift
+import PromiseKit
 
 class API {
     
@@ -36,6 +37,44 @@ class API {
         }
     }
     
+    func groupsRequest() -> Promise<Data> {
+        return Promise<Data> { resolver in
+            let method = "/groups.get"
+            let parameters: Parameters = [
+                "user_id": cliendId,
+                "count": 100,
+                "extended": 1,
+                "access_token": token,
+                "v": "5.131"]
+            let url = baseUrl + method
+            AF.request(url, method: .get, parameters: parameters).responseJSON { response in
+                if let error = response.error {
+                    resolver.reject(error)
+                }
+                if let data = response.data {
+                    resolver.fulfill(data)
+                    }
+                }
+            }
+        }
+    
+    func getGroupsFromData(from data: Data) -> Promise<Groups> {
+        return Promise<Groups> { resolver in
+            do {
+                let groupsResponse = try JSONDecoder().decode(Groups.self, from: data)
+                resolver.fulfill(groupsResponse)
+            } catch {
+                resolver.reject(error)
+            }
+        }
+    }
+    
+    func displayGroups(from groupsResponse: Groups) -> Promise<[Group]> {
+        return Promise<[Group]> { resolver in
+            let groups = groupsResponse.response.items
+                resolver.fulfill(groups)
+        }
+    }
     
     
     //var news: NewsResponse?
