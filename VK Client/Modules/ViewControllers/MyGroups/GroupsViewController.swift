@@ -18,6 +18,7 @@ class GroupsViewController: UIViewController, UITableViewDataSource, UITableView
     private let databaseService = DatabaseServiceImpl()
     private let ref = Database.database().reference(withPath: "user")
     private var groupsFB = [FBGroupModel]()
+    var cellsArray: [UITableViewCell] = []
     
     @IBOutlet weak var groupsTableView: UITableView! {
         didSet {
@@ -36,8 +37,10 @@ class GroupsViewController: UIViewController, UITableViewDataSource, UITableView
             self.apiService.getGroupsFromData(from: groupsResponse)
         }.then { groups in
             self.apiService.displayGroups(from: groups)
-        }.done { parsedGroups in
-            self.groups = parsedGroups
+        }.then { parsedGroups in
+            self.makeCell(groups: parsedGroups)
+        }.done { cells in
+            self.cellsArray = cells
             self.groupsTableView.reloadData()
         }.catch { error in
             print(error)
@@ -73,16 +76,26 @@ class GroupsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groups.count
+        return cellsArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath)
-        let group = groups[indexPath.row]
-        cell.textLabel?.text = "\(group.name)"
-        cell.imageView?.sd_setImage(with: URL(string: group.photo100), placeholderImage: UIImage())
-        return cell
+        return cellsArray[indexPath.row]
     }
-    
-    
+}
+
+extension GroupsViewController {
+    func makeCell(groups: [Group] ) -> Promise<[UITableViewCell]> {
+        return Promise<[UITableViewCell]> { resolver in
+        var cells: [UITableViewCell] = []
+            groups.forEach {
+                if let cell = self.groupsTableView.dequeueReusableCell(withIdentifier: "GroupCell"){
+                    cell.textLabel?.text = "\($0.name)"
+                    cell.imageView?.sd_setImage(with: URL(string: $0.photo100), placeholderImage: UIImage())
+                    cells.append(cell)
+                }
+                }
+            resolver.fulfill(cells)
+        }
+    }
 }
